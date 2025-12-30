@@ -17,28 +17,43 @@ const LETTER_CONFIG = {
     
     // 正文段落（数组）
     paragraphs: [
-        '亲爱的你，当你打开这封信的时候，我想让你知道，每一个字都是我用心写下的。就像春天的花朵慢慢绽放，像海浪一次次拍打着岸边，我的思绪也一遍遍地飞向你。',
+        '各位我的听众们，你们好，如果你们有缘打开这封信，说明在这个漫天盖地频率世界里，你进入到了我的世界几分钟。',
         
-        '生活就像一部法国新浪潮电影，充满了意外和惊喜。我们在时光的长河中相遇，在音乐的旋律中相知。每一次演出，每一首歌，都是我想要对你说的话。',
+        '当然，新年快乐，不过我不只想说这个。',
+        
+        '你们还愿意打开这封信，证明你们是留下来的人，像珍珠一般镶嵌在最中心的大海里，连同我这一座小岛，都被你们映衬得闪闪发亮。',
+        
+        '就像你们写很多信给我一样，我也想在这个上一年与下一年的交界处，用一个不一样的形式，送你们一封信，诉衷心肠。',
+        
+        '大家都说音乐是天堂的声音，它的确通过一些声波，让我在偶然间感受到，在这个三维空间里，无法形容的一种存在，而我把这种存在，再通过我的频率，输送给有缘的你们，好似这一切就像一个圆，闭环了。',
         
         {
             type: 'quote',
-            content: '音乐是时间的诗，歌声是灵魂的信。<br>而你，是我最想唱给这个世界听的旋律。'
+            content: '旋律就算再优美，词藻就算再华丽，我觉得都不足以形容我们的关系和感情，这是一种别出心裁的交互，是一场最遥远的碰触，真相大白了，这就是爱。<br><br>不是小情小爱，而是最原始的爱，这就是地球唯一的终极答案。'
         },
         
-        '我希望我的歌声能陪伴你度过每一个春夏秋冬，无论是阳光明媚的日子，还是风雨交加的夜晚。就像海啸过后依然会有平静，黑暗过后必然会迎来黎明。',
+        '"带着爱走下去"这是我对你们的第一个祝福，它可以帮你抵御一切刀山火海，让你在无论何时的尽头都不觉遗憾。',
         
-        '感谢你的每一次倾听，每一次支持。这封信不仅是我写给你的，也是你们所有人给我的力量的见证。让我们一起，在这个充满诗意和青春的时代里，勇敢地追逐梦想，哪怕前路漫漫，也要相信美好终将到来。'
+        '"看向远方"这是我对你们的第二个祝福，它可以让你永远前行，抵达你心中的理想之地，希望是抵抗死亡的一剂良药。',
+        
+        '"看见周围的一切"这是我对你们的第三个祝福，它可以帮你把爱输送出去，相信我，爱很简单，你只要愿意真的擦亮眼睛看到大家，爱就出现了。',
+        
+        {
+            type: 'quote',
+            content: '而我呢？<br>"我的爱是一阵徐徐暖风，分不清何处来，也不一定吹向哪里。<br>我会带走你的味道，偷偷吹散你的坏心情，笑了就不留痕迹的去下一个地方，不会怪你，因为我们都很自由，只剩若有似无的温度，抓不住的感受，没有形状，但你却知道它一定来过。"'
+        },
+        
+        'ps. 2026马上要推出的第四张专辑，也是我第一次这么大刀阔斧的操刀自己的专辑，希望大家都能从中获得一些什么，也期待新的一年与你们多多见面，安好。'
     ],
     
     // 落款前缀
-    signaturePrefix: '永远爱你的',
+    signaturePrefix: '爱你们的',
     
     // 落款日期
     signatureDate: '2025.12.30',
     
     // 页脚彩蛋
-    footerEasterEgg: '愿所有美好的事物都能在春风里重逢 🌸'
+    // footerEasterEgg: '在这个漫天盖地的频率世界里，感谢你进入我的世界 🌊'
 };
 
 // ==================== 全局变量 ====================
@@ -250,6 +265,52 @@ function initScrollFadeIn() {
     }, 1500);
 }
 
+// ==================== 音乐播放器功能 ====================
+/**
+ * 初始化音乐播放器
+ * 控制播放/暂停
+ */
+function initMusicPlayer() {
+    const playButton = document.getElementById('playButton');
+    const bgAudio = document.getElementById('bgAudio');
+    const playIcon = document.querySelector('.play-icon');
+    const pauseIcon = document.querySelector('.pause-icon');
+    
+    if (!playButton || !bgAudio) {
+        console.warn('音乐播放器元素未找到');
+        return;
+    }
+    
+    // 播放/暂停按钮点击事件
+    playButton.addEventListener('click', function() {
+        if (bgAudio.paused) {
+            // 播放音乐
+            bgAudio.play().then(() => {
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+            }).catch(error => {
+                console.error('音频播放失败:', error);
+            });
+        } else {
+            // 暂停音乐
+            bgAudio.pause();
+            playIcon.style.display = 'block';
+            pauseIcon.style.display = 'none';
+        }
+    });
+    
+    // 音频结束时重置按钮状态
+    bgAudio.addEventListener('ended', function() {
+        playIcon.style.display = 'block';
+        pauseIcon.style.display = 'none';
+    });
+    
+    // 音频加载错误处理
+    bgAudio.addEventListener('error', function() {
+        console.error('音频文件加载失败');
+    });
+}
+
 // ==================== 页面初始化 ====================
 /**
  * 页面加载完成后的初始化流程
@@ -265,6 +326,9 @@ window.addEventListener('DOMContentLoaded', function() {
     
     // 3. 初始化增强效果
     initEnhancedEffects();
+    
+    // 4. 初始化音乐播放器
+    initMusicPlayer();
     
     console.log('信件页面加载完成！');
 });

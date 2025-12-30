@@ -112,6 +112,22 @@
                 <p class="letter-subtitle" id="letterSubtitle">A Letter For You</p>
             </div>
 
+            <!-- 音乐播放器 -->
+            <div class="music-player" id="musicPlayer">
+                <button class="play-button" id="playButton">
+                    <svg class="play-icon" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    <svg class="pause-icon" viewBox="0 0 24 24" style="display: none;">
+                        <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+                    </svg>
+                </button>
+                <span class="player-label">👈&nbsp;听信</span>
+                <audio id="bgAudio">
+                    <source src="./audio.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+
             <!-- 信件内容 -->
             <div class="letter-content" id="letterContent">
                 <!-- 内容将通过 JavaScript 动态生成 -->

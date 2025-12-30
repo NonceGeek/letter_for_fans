@@ -363,6 +363,69 @@ body {
     margin: 25px auto;
 }
 
+/* ==================== 音乐播放器 ==================== */
+.music-player {
+    margin: 40px auto 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+    z-index: 1;
+}
+
+/* 播放按钮 */
+.play-button {
+    width: 48px;
+    height: 48px;
+    border: 2px solid rgba(159, 180, 199, 0.3);
+    background: rgba(159, 180, 199, 0.08);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.play-button:hover {
+    background: rgba(159, 180, 199, 0.15);
+    border-color: rgba(159, 180, 199, 0.5);
+    transform: scale(1.08);
+}
+
+.play-button:active {
+    transform: scale(0.95);
+}
+
+.play-icon,
+.pause-icon {
+    width: 20px;
+    height: 20px;
+    fill: #7a94a8;
+    transition: fill 0.3s ease;
+}
+
+.play-button:hover .play-icon,
+.play-button:hover .pause-icon {
+    fill: #4a6b7c;
+}
+
+/* 播放器文字标签 */
+.player-label {
+    font-size: 15px;
+    color: #7a94a8;
+    letter-spacing: 2px;
+    font-family: 'STKaiti', 'KaiTi', serif;
+    transition: color 0.3s ease;
+}
+
+.music-player:hover .player-label {
+    color: #4a6b7c;
+}
+
 /* 信件正文区域 */
 .letter-content {
     position: relative;
@@ -557,6 +620,28 @@ body {
     .letter-quote {
         font-size: 18px;
         padding: 30px 40px;
+    }
+    
+    /* 移动端音乐播放器 */
+    .music-player {
+        margin: 30px auto 40px;
+        gap: 12px;
+    }
+    
+    .play-button {
+        width: 44px;
+        height: 44px;
+    }
+    
+    .play-icon,
+    .pause-icon {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .player-label {
+        font-size: 14px;
+        letter-spacing: 1.5px;
     }
 
     .letter-stamp {
