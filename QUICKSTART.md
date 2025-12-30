@@ -229,7 +229,7 @@ location.reload()  // 刷新页面查看
 function shareContent() {
     if (navigator.share) {
         navigator.share({
-            title: '致读者的信',
+            title: '致粉丝的信',
             text: '来看看这封特别的信',
             url: window.location.href
         });

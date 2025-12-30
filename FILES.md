@@ -138,7 +138,7 @@ vercel deploy index-modular.html styles.css script.js
 ```javascript
 const LETTER_CONFIG = {
     artistName: '尹毓恪',
-    title: '致读者的信',
+    title: '致粉丝的信',
     subtitle: 'A Letter For You',
     paragraphs: [ /* ... */ ],
     signaturePrefix: '永远爱你的',
@@ -167,7 +167,7 @@ resetOpenCount(); // 重置打开次数
 - 自定义建议
 - 常见问题解答
 
-**适合阅读者**:
+**适合阅粉丝**:
 - 想了解项目整体情况
 - 需要自定义内容
 - 寻找部署方案
@@ -187,7 +187,7 @@ resetOpenCount(); // 重置打开次数
 - DNS 配置详解
 - 部署验证清单
 
-**适合阅读者**:
+**适合阅粉丝**:
 - 准备部署到生产环境
 - 需要配置自定义域名
 - 需要服务器配置示例

@@ -1,5 +1,5 @@
 /**
- * 尹毓恪 - 致读者的信
+ * 尹毓恪 - 致粉丝的信
  * JavaScript 交互脚本
  * 功能：拆封动画、打开计数、内容渲染、增强效果
  */
@@ -10,7 +10,7 @@ const LETTER_CONFIG = {
     artistName: '尹毓恪',
     
     // 信标题
-    title: '致读者的信',
+    title: '致粉丝的信',
     
     // 副标题
     subtitle: 'A Letter For You',
