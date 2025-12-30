@@ -443,10 +443,10 @@ body {
     text-indent: 2em;
 }
 
-.letter-paragraph::first-line {
+/* .letter-paragraph {
     font-weight: 500;
     color: #4a6b7c;
-}
+} */
 
 /* 引用/诗句样式 */
 .letter-quote {
