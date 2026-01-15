@@ -7,6 +7,23 @@
 import { Application, Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
 import { oakCors } from "https://deno.land/x/cors@v1.2.2/mod.ts";
 
+// Initialize Deno KV database
+const kv = await Deno.openKv();
+
+// Admin password verification function
+async function verifyAdminPassword(
+  context: any,
+  password: string
+): Promise<boolean> {
+  const adminPwd = Deno.env.get("ADMIN_PWD");
+  if (!password || password !== adminPwd) {
+    context.response.status = 401;
+    context.response.body = { error: "Unauthorized: Invalid password" };
+    return false;
+  }
+  return true;
+}
+
 // Letter configuration - same as in script.js
 const LETTER_CONFIG = {
   artistName: "尹毓恪",
@@ -32,12 +49,16 @@ const LETTER_CONFIG = {
     "ps. 2026马上要推出的第四张专辑，也是我第一次这么大刀阔斧的操刀自己的专辑，希望大家都能从中获得一些什么，也期待新的一年与你们多多见面，安好。",
   ],
   signaturePrefix: "爱你们的",
-  signatureDate: "2025.12.30",
+  signatureDate: "2025.12.31",
 };
 
-// In-memory open counter (will reset on server restart)
-// For production, consider using a database like Deno KV
-let openCount = 0;
+// Open counter is now stored in Deno KV (persistent across server restarts)
+// Initialize the counter if it doesn't exist
+const openCountKey = ["openCount"];
+const existingCount = await kv.get(openCountKey);
+if (existingCount.value === null) {
+  await kv.set(openCountKey, 0);
+}
 
 // Initialize router
 const router = new Router();
@@ -51,8 +72,9 @@ router
       endpoints: {
         "/": "API info",
         "/api/letter": "Get letter content",
-        "/api/open": "Increment open count (POST)",
+        "/api/open": "Increment open count (GET)",
         "/api/stats": "Get statistics",
+        "/api/reset?password=xxx": "Reset open count (Admin only)",
       },
     };
   })
@@ -63,21 +85,50 @@ router
       data: LETTER_CONFIG,
     };
   })
-  .post("/api/open", async (context) => {
-    // Increment open count
-    openCount++;
+  .get("/api/reset", async (context) => {
+    // Reset open count (admin only)
+    const url = new URL(context.request.url);
+    const password = url.searchParams.get("password");
+    
+    // Verify admin password
+    if (!await verifyAdminPassword(context, password || "")) {
+      return;
+    }
+    
+    // Reset the counter to 0
+    const openCountKey = ["openCount"];
+    await kv.set(openCountKey, 0);
+    
     context.response.body = {
       success: true,
-      count: openCount,
+      message: "打开次数已重置为 0",
+      count: 0,
+    };
+  })
+  .get("/api/open", async (context) => {
+    // Increment open count in Deno KV
+    const openCountKey = ["openCount"];
+    const result = await kv.get(openCountKey);
+    const currentCount = (result.value as number) || 0;
+    const newCount = currentCount + 1;
+    await kv.set(openCountKey, newCount);
+    
+    context.response.body = {
+      success: true,
+      count: newCount,
       message: "信件打开次数 +1",
     };
   })
-  .get("/api/stats", (context) => {
-    // Return statistics
+  .get("/api/stats", async (context) => {
+    // Return statistics from Deno KV
+    const openCountKey = ["openCount"];
+    const result = await kv.get(openCountKey);
+    const currentCount = (result.value as number) || 0;
+    
     context.response.body = {
       success: true,
       stats: {
-        openCount: openCount,
+        openCount: currentCount,
         serverStartTime: new Date().toISOString(),
         artistName: LETTER_CONFIG.artistName,
       },
@@ -135,7 +186,7 @@ console.info(`
 📝 API Endpoints:
    - GET  /                  → API info
    - GET  /api/letter        → Letter content
-   - POST /api/open          → Increment counter
+   - GET /api/open          → Increment counter
    - GET  /api/stats         → Statistics
    - GET  /health            → Health check
 

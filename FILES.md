@@ -142,7 +142,7 @@ const LETTER_CONFIG = {
     subtitle: 'A Letter For You',
     paragraphs: [ /* ... */ ],
     signaturePrefix: '永远爱你的',
-    signatureDate: '2025.12.30',
+    signatureDate: '2025.12.31',
     footerEasterEgg: '愿所有美好...'
 };
 ```
@@ -342,5 +342,5 @@ A: 修改配置对象后重新部署，或直接在生产环境替换文件。
 
 ---
 
-**最后更新**: 2025.12.30
+**最后更新**: 2025.12.31
 

@@ -62,7 +62,7 @@ Get the complete letter content configuration.
     "subtitle": "A Letter For You",
     "paragraphs": [...],
     "signaturePrefix": "爱你们的",
-    "signatureDate": "2025.12.30"
+    "signatureDate": "2025.12.31"
   }
 }
 ```

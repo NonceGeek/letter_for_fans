@@ -1,3 +1,9 @@
+# PROMPT 0
+
+我是一个歌手，我希望生成一个网页端可以打开的程序并部署在我的域名 letter.yinyuke.com 下。这封信我希望的风格是 ｛法国新浪潮电影般的文艺少年感。结合了韦斯·安德森式的复古配色（柔和的蓝彩与冷调），强调对称和精致的构图。界面应该像一本精心制作的复古手账，包含手绘的插图元素、插图我希望有春天和海啸的图案元素，旧邮票的纹理，以及像打字机敲击出来或钢笔书写的文字，充满诗意和青春的躁动感}，并希望可以统计这封信被「打开」了多少次。
+
+# PROMPT 1
+
 你是一个资深前端工程师 + 视觉设计师。请为歌手「尹毓恪」生成一个可直接部署到 letter.yinyuke.com 的网页项目，用来呈现一封「给粉丝的信」。
 
 1) 项目交付物（必须）
@@ -45,3 +51,15 @@
 
 实现“统计这封信被打开了多少次”，定义为：用户点击信封并成功进入已打开状态时计数 +1。
 仅做纯前端实现，且不要删除任何现有文件。
+
+# PROMPT 1.1
+
+@index.html:1-139 make the letter scrollable.
+
+@letter.md:1-25 update the letter content with the letter.md.
+
+@index.html:1-140 insert a micro music player in the letter, between the  paragraphs and the subtitle, and give me a example mp3 file under the root folder.
+
+@index.html:116-144 only keep the play/pause button and not loop the audio.
+
+@index.html:116-129 add text "👈 听信" beside the button.

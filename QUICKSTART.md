@@ -78,7 +78,7 @@ const LETTER_CONFIG = {
     title: '给你的一封信',
     
     // 修改日期
-    signatureDate: '2025.12.30',
+    signatureDate: '2025.12.31',
     
     // 修改正文
     paragraphs: [

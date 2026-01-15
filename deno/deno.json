@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "dev": "deno run --watch -A main.tsx",
+    "dev": "deno run --watch --unstable-kv -A main.tsx",
     "deploy": "deployctl deploy --prod --project=letter-yyk main.tsx"
   },
   "imports": {

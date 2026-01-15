@@ -50,7 +50,7 @@ const LETTER_CONFIG = {
     signaturePrefix: '爱你们的',
     
     // 落款日期
-    signatureDate: '2025.12.30',
+    signatureDate: '2025.12.31',
     
     // 页脚彩蛋
     // footerEasterEgg: '在这个漫天盖地的频率世界里，感谢你进入我的世界 🌊'
@@ -94,28 +94,30 @@ function initEnvelopeInteraction() {
 // ==================== 功能：打开次数统计 ====================
 /**
  * 增加打开次数计数
- * 使用 localStorage 存储，仅在成功拆封时调用
+ * 调用后端 API 增加计数，并获取全局统计数据
  */
-function incrementOpenCount() {
-    const STORAGE_KEY = 'letter_open_count';
+async function incrementOpenCount() {
+    const API_BASE_URL = 'https://backend.yinyuke.com';
     
-    // 从 localStorage 获取当前计数
-    let count = localStorage.getItem(STORAGE_KEY);
-    
-    if (count === null || count === undefined) {
-        count = 0;
-    } else {
-        count = parseInt(count, 10);
+    try {
+        // 调用后端 API 增加打开次数
+        await fetch(`${API_BASE_URL}/api/open`);
+        
+        // 获取最新的统计数据
+        const response = await fetch(`${API_BASE_URL}/api/stats`);
+        const data = await response.json();
+        
+        if (data.success && data.stats) {
+            // 显示全局打开次数
+            displayOpenCount(data.stats.openCount);
+        } else {
+            console.error('获取统计数据失败');
+        }
+    } catch (error) {
+        console.error('API 调用失败:', error);
+        // 失败时显示默认值
+        displayOpenCount(0);
     }
-    
-    // 计数加 1
-    count++;
-    
-    // 保存回 localStorage
-    localStorage.setItem(STORAGE_KEY, count);
-    
-    // 显示计数（带动画效果）
-    displayOpenCount(count);
 }
 
 /**
@@ -128,6 +130,12 @@ function displayOpenCount(targetCount) {
     if (!counterElement) {
         console.error('无法找到计数器元素');
         return;
+    }
+    
+    // 显示计数器容器
+    const statsContainer = document.getElementById('statsContainer');
+    if (statsContainer) {
+        statsContainer.style.display = 'block';
     }
     
     let currentDisplay = 0;
@@ -192,13 +200,21 @@ function renderLetterContent() {
         </div>
     `;
     
-    contentContainer.innerHTML = contentHTML;
+    // 添加页脚区域
+    contentHTML += `
+        <br><br>
+        <div class="footer-message" id="footerMessage">
+            ${LETTER_CONFIG.footerEasterEgg ? `<div class="footer-easter-egg">${LETTER_CONFIG.footerEasterEgg}</div>` : ''}
+            <!-- 打开次数统计 -->
+            <div class="open-counter" id="statsContainer" style="display: none;">
+                <span>这封信已被打开</span>
+                <span class="counter-number" id="openCount">0</span>
+                <span>次</span>
+            </div>
+        </div>
+    `;
     
-    // 设置页脚彩蛋
-    const footerElement = document.getElementById('footerMessage');
-    if (footerElement) {
-        footerElement.textContent = LETTER_CONFIG.footerEasterEgg;
-    }
+    contentContainer.innerHTML = contentHTML;
 }
 
 // ==================== 增强交互效果 ====================
@@ -335,18 +351,21 @@ window.addEventListener('DOMContentLoaded', function() {
 
 // ==================== 工具函数 ====================
 /**
- * 重置打开次数（用于调试）
- * 在浏览器控制台运行: resetOpenCount()
+ * 获取当前统计数据（用于调试）
+ * 在浏览器控制台运行: getStats()
  */
-function resetOpenCount() {
-    localStorage.removeItem('letter_open_count');
-    const counterElement = document.getElementById('openCount');
-    if (counterElement) {
-        counterElement.textContent = '0';
+async function getStats() {
+    const API_BASE_URL = 'https://backend.yinyuke.com';
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/stats`);
+        const data = await response.json();
+        console.log('统计数据:', data);
+        return data;
+    } catch (error) {
+        console.error('获取统计数据失败:', error);
     }
-    console.log('打开次数已重置');
 }
 
 // 将工具函数暴露到全局（方便调试）
-window.resetOpenCount = resetOpenCount;
+window.getStats = getStats;
 
